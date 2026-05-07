@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Alyson Schwartz</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --red: #e50914;
+    --dark: #141414;
+    --card: #1e1e1e;
+    --border: #2a2a2a;
+    --muted: #b3b3b3;
+    --dim: #666;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 100%; min-height: 100vh; background: var(--dark); font-family: 'Barlow', sans-serif; color: #e5e5e5; overflow-x: hidden; }
+
+  /* ── SCREENS ── */
+  .screen { display: none; min-height: 100vh; }
+  .screen.active { display: flex; flex-direction: column; }
+
+  /* ══════════════════════════════
+     PROFILE SCREEN
+  ══════════════════════════════ */
+  #screen-profiles {
+    align-items: center;
+    justify-content: center;
+    background: var(--dark);
+    flex-direction: column;
+    gap: 0;
+  }
+  .profiles-wrap { text-align: center; }
+  .profiles-heading {
+    font-family: 'Barlow', sans-serif;
+    font-weight: 300;
+    font-size: clamp(22px, 4vw, 34px);
+    color: #e5e5e5;
+    letter-spacing: 1px;
+    margin-bottom: 42px;
+  }
+  .profiles-grid {
+    display: flex;
+    gap: 28px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .profile-btn {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    border: none;
+    background: none;
+    transition: transform 0.2s ease;
+  }
+  .profile-btn:hover { transform: scale(1.08); }
+  .profile-btn:hover .profile-avatar { border-color: #e5e5e5; }
+  .profile-btn:hover .profile-label { color: #e5e5e5; }
+  .profile-avatar {
+    width: 110px;
+    height: 110px;
+    border-radius: 6px;
+    border: 3px solid transparent;
+    transition: border-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    overflow: hidden;
+  }
+  .pa-about   { background: linear-gradient(135deg, #1a1a2e, #16213e); }
+  .pa-projects{ background: linear-gradient(135deg, #1a0a0a, #3a0a0a); }
+  .pa-contact { background: linear-gradient(135deg, #0a1a0a, #0a2a1a); }
+  .profile-label {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--muted);
+    letter-spacing: 0.5px;
+    transition: color 0.2s ease;
+  }
+
+  /* netflix logo top */
+  .nf-logo-top {
+    position: absolute;
+    top: 28px;
+    left: 36px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    color: var(--red);
+    letter-spacing: 2px;
+    cursor: pointer;
+    z-index: 10;
+  }
+
+  /* ══════════════════════════════
+     SHARED NAV
+  ══════════════════════════════ */
+  .nav {
+    background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, transparent 100%);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 36px;
+    height: 64px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-left { display: flex; align-items: center; gap: 28px; }
+  .nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 30px; color: var(--red); letter-spacing: 2px; cursor: pointer; }
+  .nav-links { display: flex; gap: 20px; }
+  .nav-link { font-size: 13px; color: var(--muted); cursor: pointer; transition: color 0.2s; letter-spacing: 0.3px; }
+  .nav-link:hover, .nav-link.active { color: #e5e5e5; }
+  .nav-right { display: flex; align-items: center; gap: 14px; }
+  .nav-avatar {
+    width: 34px; height: 34px;
+    background: var(--red);
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 600; color: #fff; cursor: pointer;
+  }
+
+  /* ══════════════════════════════
+     ABOUT SCREEN
+  ══════════════════════════════ */
+  #screen-about { background: var(--dark); }
+
+  .hero-about {
+    height: 420px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+  }
+  .hero-bg-about {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  }
+  .hero-noise {
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity: 0.4;
+  }
+  .hero-fade-about {
+    position: absolute; inset: 0;
+    background: linear-gradient(to right, #141414 35%, transparent 70%), linear-gradient(to top, #141414 0%, transparent 50%);
+  }
+  .hero-img-about {
+    position: absolute; right: 0; top: 0; bottom: 0; width: 22%;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 8px;
+  }
+  .img-placeholder {
+    width: 100%; height: 100%;
+    background: rgba(255,255,255,0.03);
+    border-left: 1px dashed rgba(255,255,255,0.08);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+  }
+  .img-placeholder svg { opacity: 0.2; }
+  .img-placeholder span { font-size: 11px; color: rgba(255,255,255,0.2); letter-spacing: 1px; }
+  .hero-content-about {
+    position: relative; z-index: 2;
+    padding: 0 36px 40px;
+    max-width: 420px;
+  }
+  .hero-eyebrow {
+    font-size: 11px; letter-spacing: 3px; color: var(--red);
+    text-transform: uppercase; margin-bottom: 10px;
+  }
+  .hero-name-big {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(44px, 7vw, 72px);
+    color: #fff; line-height: 0.95;
+    margin-bottom: 12px;
+  }
+  .hero-desc {
+    font-size: 14px; color: var(--muted); line-height: 1.65;
+    margin-bottom: 22px; font-weight: 300;
+    max-width: 340px;
+  }
+  .hero-btns { display: flex; gap: 10px; }
+  .btn-primary {
+    background: var(--red); color: #fff; border: none;
+    padding: 10px 22px; border-radius: 3px; font-size: 13px;
+    font-family: 'Barlow', sans-serif; font-weight: 500;
+    cursor: pointer; display: flex; align-items: center; gap: 7px;
+    transition: background 0.2s;
+  }
+  .btn-primary:hover { background: #f40612; }
+  .btn-secondary {
+    background: rgba(109,109,110,0.5); color: #fff; border: none;
+    padding: 10px 22px; border-radius: 3px; font-size: 13px;
+    font-family: 'Barlow', sans-serif; font-weight: 500;
+    cursor: pointer; display: flex; align-items: center; gap: 7px;
+    transition: background 0.2s;
+  }
+  .btn-secondary:hover { background: rgba(109,109,110,0.7); }
+
+  /* ABOUT SECTIONS */
+  .content-section { padding: 36px 36px 0; }
+  .sec-title {
+    font-size: 15px; font-weight: 500; color: #e5e5e5;
+    margin-bottom: 18px; display: flex; align-items: center; gap: 10px;
+  }
+  .sec-badge {
+    font-size: 10px; color: var(--red);
+    background: rgba(229,9,20,0.12); padding: 2px 8px; border-radius: 3px;
+    letter-spacing: 1px;
+  }
+  .about-2col { display: grid; grid-template-columns: minmax(320px, 1.7fr) minmax(220px, 1fr); gap: 18px; }
+  .info-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 6px; padding: 26px;
+  }
+  .bio-card { min-height: 360px; }
+  .info-label {
+    font-size: 10px; color: var(--red); letter-spacing: 2px;
+    text-transform: uppercase; margin-bottom: 14px;
+  }
+  .info-text { font-size: 14px; color: var(--muted); line-height: 1.85; font-weight: 300; }
+  .photo-circle {
+    width: 64px; height: 64px; border-radius: 50%;
+    background: #252525; border: 2px dashed #3a3a3a;
+    display: flex; align-items: center; justify-content: center; margin-bottom: 14px;
+  }
+  .language-list {
+    list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 12px;
+  }
+  .language-item {
+    background: rgba(255,255,255,0.04); border: 1px solid #2a2a2a;
+    border-radius: 5px; padding: 12px 14px; font-size: 13px; color: #e5e5e5;
+    letter-spacing: 0.3px;
+  }
+
+  /* ══════════════════════════════
+     PROJECTS SCREEN
+  ══════════════════════════════ */
+  #screen-projects { background: var(--dark); }
+
+  .hero-projects {
+    height: 380px; position: relative; overflow: hidden;
+    display: flex; align-items: flex-end;
+  }
+  .hero-bg-projects {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, #1a0a0a 0%, #3a0a0a 50%, #5a0a0a 100%);
+  }
+  .hero-fade-proj {
+    position: absolute; inset: 0;
+    background: linear-gradient(to right, #141414 30%, transparent 70%), linear-gradient(to top, #141414 0%, transparent 45%);
+  }
+  .hero-content-proj {
+    position: relative; z-index: 2;
+    padding: 0 36px 40px; max-width: 420px;
+  }
+
+  .project-shelf { padding: 28px 36px 0; }
+  .shelf-title {
+    font-size: 15px; font-weight: 500; color: #e5e5e5;
+    margin-bottom: 16px; display: flex; align-items: center; gap: 10px;
+  }
+  .shelf-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; overflow: visible; padding-bottom: 0; }
+  .shelf-row::-webkit-scrollbar { height: 3px; }
+  .shelf-row::-webkit-scrollbar-track { background: #1a1a1a; }
+  .shelf-row::-webkit-scrollbar-thumb { background: #444; border-radius: 3px; }
+
+  .proj-card {
+    background: var(--card);
+    border: 1px solid var(--border); border-radius: 5px;
+    overflow: hidden; cursor: pointer;
+    transition: transform 0.25s ease, border-color 0.2s;
+    min-width: 0;
+  }
+  .proj-card:hover { transform: scale(1.04); border-color: #555; }
+  .proj-thumb {
+    aspect-ratio: 16 / 9;
+    background: #252525;
+    position: relative;
+    overflow: hidden;
+  }
+  .proj-thumb-img {
+    width: 100%; height: 100%; display: flex;
+    align-items: center; justify-content: center;
+    background: rgba(255,255,255,0.04);
+    color: rgba(255,255,255,0.55);
+    font-size: 12px; letter-spacing: 0.6px;
+    text-transform: uppercase;
+  }
+  .proj-thumb-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .proj-body { padding: 10px 12px; }
+  .proj-title { font-size: 12px; color: #e5e5e5; font-weight: 500; margin-bottom: 8px; }
+  .proj-meta { font-size: 10px; color: var(--dim); margin-bottom: 12px; }
+  .proj-action-button {
+    width: 100%; background: rgba(229,9,20,0.12); color: #fff;
+    border: 1px solid rgba(229,9,20,0.25); border-radius: 4px;
+    padding: 10px 12px; font-size: 12px; cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .proj-action-button:hover { background: rgba(229,9,20,0.2); border-color: var(--red); }
+
+  .project-modal {
+    position: fixed; inset: 0; display: none; align-items: center; justify-content: center;
+    background: rgba(0,0,0,0.75); z-index: 200;
+    padding: 28px;
+  }
+  .project-modal.open { display: flex; }
+  .project-modal-content {
+    width: 100%; max-width: 520px; background: #161616; border: 1px solid #2a2a2a;
+    border-radius: 10px; padding: 28px; position: relative;
+  }
+  .modal-close {
+    position: absolute; top: 14px; right: 14px; border: none;
+    background: transparent; color: #fff; font-size: 20px; cursor: pointer;
+  }
+  .modal-title { font-size: 18px; margin-bottom: 14px; color: #e5e5e5; }
+  .modal-description { font-size: 14px; color: #ccc; line-height: 1.7; margin-bottom: 18px; }
+  .modal-link {
+    display: inline-block; background: var(--red); color: #fff; text-decoration: none;
+    padding: 10px 16px; border-radius: 5px; font-size: 13px;
+  }
+
+  /* ══════════════════════════════
+     CONTACT SCREEN
+  ══════════════════════════════ */
+  #screen-contact { background: var(--dark); }
+
+  .hero-contact {
+    height: 340px; position: relative; overflow: hidden;
+    display: flex; align-items: flex-end;
+  }
+  .hero-bg-contact {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, #0a1a0a 0%, #0a2a1a 50%, #0a3a2a 100%);
+  }
+  .hero-fade-contact {
+    position: absolute; inset: 0;
+    background: linear-gradient(to right, #141414 30%, transparent 70%), linear-gradient(to top, #141414 0%, transparent 45%);
+  }
+  .hero-content-contact {
+    position: relative; z-index: 2;
+    padding: 0 36px 40px; max-width: 440px;
+  }
+
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 32px 36px 0; }
+  .contact-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 6px; padding: 20px;
+    display: flex; align-items: center; gap: 16px;
+    cursor: pointer; transition: border-color 0.2s, background 0.2s;
+  }
+  .contact-card:hover { border-color: #555; background: #242424; }
+  .contact-icon {
+    width: 44px; height: 44px; background: #252525;
+    border-radius: 5px; display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; font-size: 20px;
+  }
+  .contact-lbl { font-size: 10px; color: var(--dim); margin-bottom: 3px; letter-spacing: 0.5px; }
+  .contact-val { font-size: 13px; color: #e5e5e5; font-weight: 400; }
+
+  .contact-form-wrap { padding: 28px 36px 36px; }
+  .contact-form {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 8px; padding: 28px; width: 100%; max-width: none;
+  }
+  .form-title { font-size: 13px; color: var(--red); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px; }
+  .form-field { margin-bottom: 16px; }
+  .form-label { font-size: 11px; color: var(--dim); margin-bottom: 6px; display: block; letter-spacing: 0.5px; }
+  .form-input {
+    width: 100%; background: #252525; border: 1px solid #333;
+    border-radius: 3px; padding: 10px 14px; color: #e5e5e5;
+    font-family: 'Barlow', sans-serif; font-size: 13px;
+    outline: none; transition: border-color 0.2s;
+  }
+  .form-input:focus { border-color: #555; }
+  .form-textarea { min-height: 90px; resize: vertical; }
+
+  /* FOOTER */
+  .page-footer {
+    margin: 40px 36px 0; border-top: 1px solid var(--border);
+    padding: 18px 0; display: flex; align-items: center; justify-content: space-between;
+  }
+  .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: var(--red); letter-spacing: 2px; }
+  .footer-copy { font-size: 11px; color: #444; }
+
+  /* BACK TO PROFILES link */
+  .back-profiles {
+    font-size: 12px; color: var(--dim); cursor: pointer;
+    display: flex; align-items: center; gap: 5px;
+    transition: color 0.2s;
+  }
+  .back-profiles:hover { color: #e5e5e5; }
+
+  /* fade-in animation */
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+  .screen.active { animation: fadeIn 0.35s ease forwards; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════
+     PROFILE SELECTION SCREEN
+══════════════════════════════ -->
+<div id="screen-profiles" class="screen active">
+  <div class="nf-logo-top">ALYSON</div>
+  <div class="profiles-wrap">
+    <p class="profiles-heading">Who's watching?</p>
+    <div class="profiles-grid">
+
+      <button class="profile-btn" onclick="showScreen('about')">
+        <div class="profile-avatar pa-about">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+            <circle cx="24" cy="18" r="9" stroke="#6b9af7" stroke-width="2.5"/>
+            <path d="M8 42c0-8.837 7.163-16 16-16s16 7.163 16 16" stroke="#6b9af7" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span class="profile-label">About Me</span>
+      </button>
+
+      <button class="profile-btn" onclick="showScreen('projects')">
+        <div class="profile-avatar pa-projects">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+            <rect x="8" y="12" width="32" height="24" rx="3" stroke="#f76b6b" stroke-width="2.5"/>
+            <path d="M16 20h16M16 28h10" stroke="#f76b6b" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span class="profile-label">Projects</span>
+      </button>
+
+      <button class="profile-btn" onclick="showScreen('contact')">
+        <div class="profile-avatar pa-contact">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+            <rect x="7" y="13" width="34" height="23" rx="3" stroke="#6bf7a8" stroke-width="2.5"/>
+            <path d="M7 16l17 12 17-12" stroke="#6bf7a8" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span class="profile-label">Contact Me</span>
+      </button>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════
+     ABOUT SCREEN
+══════════════════════════════ -->
+<div id="screen-about" class="screen">
+  <nav class="nav" style="background: linear-gradient(to bottom,rgba(0,0,0,0.95),transparent);">
+    <div class="nav-left">
+      <div class="nav-logo" onclick="showScreen('profiles')">ALYSON</div>
+      <div class="nav-links">
+        <span class="nav-link active" onclick="showScreen('about')">About</span>
+        <span class="nav-link" onclick="showScreen('projects')">Projects</span>
+        <span class="nav-link" onclick="showScreen('contact')">Contact</span>
+      </div>
+    </div>
+    <div class="nav-right">
+      <span class="back-profiles" onclick="showScreen('profiles')">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        Profiles
+      </span>
+      <div class="nav-avatar">AS</div>
+    </div>
+  </nav>
+
+  <div class="hero-about">
+    <div class="hero-bg-about"></div>
+    <div class="hero-noise"></div>
+    <div class="hero-img-about">
+      <div class="img-placeholder">
+        <svg width="52" height="52" viewBox="0 0 52 52" fill="none"><circle cx="26" cy="20" r="11" stroke="white" stroke-width="2"/><path d="M6 48c0-11.046 8.954-20 20-20s20 8.954 20 20" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+        <span>profile photo</span>
+      </div>
+    </div>
+    <div class="hero-fade-about"></div>
+    <div class="hero-content-about">
+      <div class="hero-eyebrow">Portfolio · Designer &amp; Developer</div>
+      <div class="hero-name-big">Alyson<br>Schwartz</div>
+      <div class="hero-desc">Your short bio goes here — who you are, what you create, and what drives you. Keep it real and personal.</div>
+      <div class="hero-btns">
+        <button class="btn-primary" onclick="showScreen('projects')">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="white"><polygon points="4,2 14,8 4,14"/></svg>
+          View Projects
+        </button>
+        <button class="btn-secondary" onclick="showScreen('contact')">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="10" rx="1.5" stroke="white" stroke-width="1.8"/><path d="M1 5l7 5 7-5" stroke="white" stroke-width="1.8"/></svg>
+          Contact Me
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-section">
+    <div class="sec-title">About Me <span class="sec-badge">BIO</span></div>
+    <div class="about-2col">
+      <div class="info-card bio-card">
+        <div class="info-label">Bio</div>
+        <div class="info-text">I’m a front-end developer who loves building polished, responsive websites and interactive user experiences. I focus on clean HTML structure, expressive CSS styling, efficient JavaScript, and modern tooling to bring design and functionality together with confidence.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-label">Languages I Know</div>
+        <ul class="language-list">
+          <li class="language-item">HTML</li>
+          <li class="language-item">CSS</li>
+          <li class="language-item">JavaScript</li>
+          <li class="language-item">JSON</li>
+          <li class="language-item">Vue</li>
+          <li class="language-item">jQuery</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <div class="footer-logo">AS</div>
+    <div class="footer-copy">© 2025 Alyson Schwartz</div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════
+     PROJECTS SCREEN
+══════════════════════════════ -->
+<div id="screen-projects" class="screen">
+  <nav class="nav" style="background:linear-gradient(to bottom,rgba(0,0,0,0.95),transparent);">
+    <div class="nav-left">
+      <div class="nav-logo" onclick="showScreen('profiles')">ALYSON</div>
+      <div class="nav-links">
+        <span class="nav-link" onclick="showScreen('about')">About</span>
+        <span class="nav-link active" onclick="showScreen('projects')">Projects</span>
+        <span class="nav-link" onclick="showScreen('contact')">Contact</span>
+      </div>
+    </div>
+    <div class="nav-right">
+      <span class="back-profiles" onclick="showScreen('profiles')">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        Profiles
+      </span>
+      <div class="nav-avatar">AS</div>
+    </div>
+  </nav>
+
+  <div class="hero-projects">
+    <div class="hero-bg-projects"></div>
+    <div class="hero-noise"></div>
+    <div class="hero-img-about" style="background:none;">
+      <div class="img-placeholder" style="border-left-color:rgba(229,9,20,0.1);">
+        <svg width="52" height="52" viewBox="0 0 52 52" fill="none"><rect x="6" y="10" width="40" height="32" rx="3" stroke="white" stroke-width="2"/><path d="M14 20h24M14 28h16" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+        <span><img src="imgs/ccbling.png" alt="Project Image"></span>
+      </div>
+    </div>
+    <div class="hero-fade-proj"></div>
+    <div class="hero-content-proj">
+      <div class="hero-eyebrow">Featured Project</div>
+      <div class="hero-name-big">Custom<br>College Bling</div>
+      <div class="hero-desc">A one-line description of your best or most recent project. What did you build and why does it matter?</div>
+      <div class="hero-btns">
+        <button class="btn-primary">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="white"><polygon points="4,2 14,8 4,14"/></svg>
+          <a href="https://526aschwartz.github.io/CCBling/" target="_blank" style="color:inherit; text-decoration:none;">View Project</a>
+        </button>
+        <button class="btn-secondary">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="white" stroke-width="1.8"/><path d="M8 5v3.5l2.5 1.5" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg>
+          More Info
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="project-shelf">
+    <div class="shelf-title">Senior Year Projects <span class="sec-badge">RECENTLY ADDED</span></div>
+    <div class="shelf-row">
+      <div class="proj-card" data-link="https://526aschwartz.github.io/CCBling/" data-description="A student-focused site for custom college merchandise, with bold visuals and an easy checkout experience."><div class="proj-thumb"><div class="proj-thumb-img"><span><img src="imgs/ccbling.png" alt="Custom College Bling"></span></div></div><div class="proj-body"><div class="proj-title">Custom College Bling</div><div class="proj-meta">Web · 2026</div></div></div>
+      <div class="proj-card" data-link="https://526aschwartz.github.io/studyingHelp/index.html" data-description="Our first website used with a collaborative GitHub. A helpful website for students who need help with focusing when studying."><div class="proj-thumb"><div class="proj-thumb-img"><span><img src="imgs/studyhelp.png" alt="Interactive App"></span></div></div><div class="proj-body"><div class="proj-title">Focus Flow</div><div class="proj-meta">Web · 2026</div></div></div>
+      <div class="proj-card" data-link="#" data-description="A polished design system showcasing reusable UI components, color tokens, and typography rules."><div class="proj-thumb"><div class="proj-thumb-img"><span><img src="imgs/ccbling.png" alt="Design System"></span></div></div><div class="proj-body"><div class="proj-title">Design System</div><div class="proj-meta">UI · 2025</div></div></div>
+      <div class="proj-card" data-link="#" data-description="A clean API dashboard layout with charts, cards, and data calls designed for modern admin workflows."><div class="proj-thumb"><div class="proj-thumb-img"><span><img src="imgs/ccbling.png" alt="API Dashboard"></span></div></div><div class="proj-body"><div class="proj-title">API Dashboard</div><div class="proj-meta">Code · 2026</div></div></div>
+      <div class="proj-card" data-link="#" data-description="A data visualization project built to present analytics clearly using interactive charts and panels."><div class="proj-thumb"><div class="proj-thumb-img"><span><img src="imgs/ccbling.png" alt="Data Visualizer"></span></div></div><div class="proj-body"><div class="proj-title">Data Visualizer</div><div class="proj-meta">Data · 2024</div></div></div>
+      <div class="proj-card" data-link="#" data-description="A brand refresh project that centers typography, imagery, and consistent visual tone for a creative identity."><div class="proj-thumb"><div class="proj-thumb-img"><span><img src="imgs/ccbling.png" alt="Brand Refresh"></span></div></div><div class="proj-body"><div class="proj-title">Brand Refresh</div><div class="proj-meta">Design · 2025</div></div></div>
+      <div class="proj-card" data-link="#" data-description="An e-commerce website concept for a modern online store with product cards and easy browsing."><div class="proj-thumb"><div class="proj-thumb-img"><span><img src="imgs/ccbling.png" alt="Online Store"></span></div></div><div class="proj-body"><div class="proj-title">Online Store</div><div class="proj-meta">E-commerce · 2025</div></div></div>
+    </div>
+  </div>
+
+  <div class="project-shelf" style="padding-top:22px;">
+    <div class="shelf-title">Junior Year Projects</div>
+    <div class="shelf-row">
+      <div class="proj-card" data-link="#" data-description="A clean landing page layout built for a modern brand launch, with strong hero copy and call to action."><div class="proj-thumb" style="height:88px;"><div class="proj-thumb-img"><span><img src="imgs/ccbling.png" alt="Landing Page"></span></div></div><div class="proj-body"><div class="proj-title">Landing Page</div><div class="proj-meta">Web · 2024</div></div></div>
+      <div class="proj-card" data-link="#" data-description="A mobile-first prototype featuring smooth interactions and a simplified user flow for mobile browsing."><div class="proj-thumb" style="height:88px;"><div class="proj-thumb-img"><span><img src="imgs/ccbling.png" alt="Mobile Prototype"></span></div></div><div class="proj-body"><div class="proj-title">Mobile Prototype</div><div class="proj-meta">Design · 2024</div></div></div>
+      <div class="proj-card" data-link="#" data-description="A blog redesign with improved readability, fresh spacing, and a stronger editorial presentation."><div class="proj-thumb" style="height:88px;"><div class="proj-thumb-img"><span><img src="imgs/ccbling.png" alt="Blog Redesign"></span></div></div><div class="proj-body"><div class="proj-title">Blog Redesign</div><div class="proj-meta">Web · 2025</div></div></div>
+      <div class="proj-card" data-link="#" data-description="A dashboard UI concept for managing analytics, with cards, key stats, and crisp typography."><div class="proj-thumb" style="height:88px;"><div class="proj-thumb-img"><span><img src="imgs/ccbling.png" alt="Dashboard UI"></span></div></div><div class="proj-body"><div class="proj-title">Dashboard UI</div><div class="proj-meta">App · 2026</div></div></div>
+      <div class="proj-card" data-link="#" data-description="Another landing page design emphasizing visual hierarchy and clear conversion-focused content."><div class="proj-thumb" style="height:88px;"><div class="proj-thumb-img"><span><img src="imgs/ccbling.png" alt="Landing Page"></span></div></div><div class="proj-body"><div class="proj-title">Landing Page</div><div class="proj-meta">Web · 2025</div></div></div>
+      <div class="proj-card" data-link="#" data-description="A set of brand assets created for a full identity refresh, including color, typography, and iconography."><div class="proj-thumb" style="height:88px;"><div class="proj-thumb-img"><span><img src="imgs/ccbling.png" alt="Brand Assets"></span></div></div><div class="proj-body"><div class="proj-title">Brand Assets</div><div class="proj-meta">Design · 2024</div></div></div>
+      <div class="proj-card" data-link="#" data-description="A creative landing page concept with bold imagery and strong messaging for a web campaign."><div class="proj-thumb" style="height:88px;"><div class="proj-thumb-img"><span><img src="imgs/ccbling.png" alt="Creative Landing"></span></div></div><div class="proj-body"><div class="proj-title">Creative Landing</div><div class="proj-meta">Web · 2025</div></div></div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <div class="footer-logo">AS</div>
+    <div class="footer-copy">© 2025 Alyson Schwartz</div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════
+     CONTACT SCREEN
+══════════════════════════════ -->
+<div id="screen-contact" class="screen">
+  <nav class="nav" style="background:linear-gradient(to bottom,rgba(0,0,0,0.95),transparent);">
+    <div class="nav-left">
+      <div class="nav-logo" onclick="showScreen('profiles')">ALYSON</div>
+      <div class="nav-links">
+        <span class="nav-link" onclick="showScreen('about')">About</span>
+        <span class="nav-link" onclick="showScreen('projects')">Projects</span>
+        <span class="nav-link active" onclick="showScreen('contact')">Contact</span>
+      </div>
+    </div>
+    <div class="nav-right">
+      <span class="back-profiles" onclick="showScreen('profiles')">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        Profiles
+      </span>
+      <div class="nav-avatar">AS</div>
+    </div>
+  </nav>
+
+  <div class="hero-contact">
+    <div class="hero-bg-contact"></div>
+    <div class="hero-noise"></div>
+    <div class="hero-img-about" style="background:none;">
+      <div class="img-placeholder" style="border-left-color:rgba(107,247,168,0.1);">
+        <svg width="52" height="52" viewBox="0 0 52 52" fill="none"><rect x="6" y="12" width="40" height="28" rx="3" stroke="white" stroke-width="2"/><path d="M6 17l20 14 20-14" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>
+        <span>contact header image</span>
+      </div>
+    </div>
+    <div class="hero-fade-contact"></div>
+    <div class="hero-content-contact">
+      <div class="hero-eyebrow">Let's Connect</div>
+      <div class="hero-name-big">Say<br>Hello.</div>
+      <div class="hero-desc">I'm currently open to new opportunities, freelance work, and collaboration. Don't hesitate to reach out.</div>
+      <div class="hero-btns">
+        <button class="btn-primary">
+          <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="10" rx="1.5" stroke="white" stroke-width="1.8"/><path d="M1 5l7 5 7-5" stroke="white" stroke-width="1.8"/></svg>
+          Send Email
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="contact-grid">
+    <div class="contact-card">
+      <div class="contact-icon">✉️</div>
+      <div><div class="contact-lbl">Email</div><div class="contact-val">your@email.com</div></div>
+    </div>
+    <div class="contact-card">
+      <div class="contact-icon">💼</div>
+      <div><div class="contact-lbl">LinkedIn</div><div class="contact-val">linkedin.com/in/alyson</div></div>
+    </div>
+    <div class="contact-card">
+      <div class="contact-icon">🐙</div>
+      <div><div class="contact-lbl">GitHub</div><div class="contact-val">github.com/alyson</div></div>
+    </div>
+    <div class="contact-card">
+      <div class="contact-icon">📄</div>
+      <div><div class="contact-lbl">Resume</div><div class="contact-val">Download PDF</div></div>
+    </div>
+  </div>
+
+  <div class="contact-form-wrap">
+    <div class="contact-form">
+      <div class="form-title">Send a Message</div>
+      <div class="form-field">
+        <label class="form-label">Your Name</label>
+        <input class="form-input" type="text" placeholder="Jane Doe"/>
+      </div>
+      <div class="form-field">
+        <label class="form-label">Email Address</label>
+        <input class="form-input" type="email" placeholder="jane@email.com"/>
+      </div>
+      <div class="form-field">
+        <label class="form-label">Message</label>
+        <textarea class="form-input form-textarea" placeholder="Hi Alyson, I'd love to connect about..."></textarea>
+      </div>
+      <button class="btn-primary" style="margin-top:4px;">Send Message</button>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <div class="footer-logo">AS</div>
+    <div class="footer-copy">© 2025 Alyson Schwartz</div>
+  </div>
+</div>
+
+<div class="project-modal" id="project-modal" onclick="if(event.target===this) closeProjectInfo()">
+  <div class="project-modal-content">
+    <button class="modal-close" onclick="closeProjectInfo()">×</button>
+    <div class="modal-title" id="modal-title">Project Title</div>
+    <div class="modal-description" id="modal-description">A detailed description of the website or app can appear here. Add your custom summary and project highlights.</div>
+    <a class="modal-link" id="modal-link" href="#" target="_blank" rel="noreferrer">Visit Website</a>
+  </div>
+</div>
+
+<script>
+  function showScreen(name) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('screen-' + name).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function initProjectButtons() {
+    document.querySelectorAll('.proj-card').forEach(card => {
+      if (card.querySelector('.proj-action-button')) return;
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'proj-action-button';
+      button.textContent = 'View Details';
+      button.addEventListener('click', () => showProjectInfo(card));
+      const body = card.querySelector('.proj-body');
+      if (body) body.appendChild(button);
+    });
+  }
+
+  function showProjectInfo(card) {
+    const title = card.querySelector('.proj-title')?.textContent || 'Project';
+    const link = card.dataset.link || '#';
+    const description = card.dataset.description || 'Add a description for this website here. This can include the purpose, tech used, and what makes the project special.';
+    document.getElementById('modal-title').textContent = title;
+    document.getElementById('modal-description').textContent = description;
+    const modalLink = document.getElementById('modal-link');
+    modalLink.href = link;
+    modalLink.textContent = link === '#' ? 'Link coming soon' : 'Visit Website';
+    document.getElementById('project-modal').classList.add('open');
+  }
+
+  function closeProjectInfo() {
+    document.getElementById('project-modal').classList.remove('open');
+  }
+
+  window.addEventListener('DOMContentLoaded', initProjectButtons);
+</script>
+</body>
+</html>
