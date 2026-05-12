@@ -396,14 +396,58 @@
   /* fade-in animation */
   @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
   .screen.active { animation: fadeIn 0.35s ease forwards; }
+
+  /* INTRO SCREEN */
+  #screen-intro {
+    background: #000;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+  .intro-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+  .intro-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 200px;
+    color: var(--red);
+    letter-spacing: 10px;
+    animation: netflixIntro 2s ease-out forwards;
+    opacity: 0;
+    position: relative;
+    z-index: 2;
+  }
+  @keyframes netflixIntro {
+    0% { opacity: 0; transform: scale(0.8); }
+    100% { opacity: 1; transform: scale(1); }
+  }
 </style>
 </head>
 <body>
 
 <!-- ══════════════════════════════
+     INTRO SCREEN
+══════════════════════════════ -->
+<div id="screen-intro" class="screen active">
+  <div class="intro-container">
+    <div class="intro-logo">A</div>
+    <audio id="intro-audio" preload="auto">
+      <source src="opening-music.mp3" type="audio/mpeg">
+      <!-- Add your opening music file here -->
+    </audio>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════
      PROFILE SELECTION SCREEN
 ══════════════════════════════ -->
-<div id="screen-profiles" class="screen active">
+<div id="screen-profiles" class="screen">
   <div class="nf-logo-top">ALYSON</div>
   <div class="profiles-wrap">
     <p class="profiles-heading">Who's watching?</p>
@@ -708,6 +752,14 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
+  function startIntro() {
+    const audio = document.getElementById('intro-audio');
+    audio.play().catch(e => console.log('Audio play failed:', e)); // Handle autoplay restrictions
+    setTimeout(() => {
+      showScreen('profiles');
+    }, 2000); // Match animation duration
+  }
+
   function initProjectButtons() {
     document.querySelectorAll('.proj-card').forEach(card => {
       if (card.querySelector('.proj-action-button')) return;
@@ -737,7 +789,10 @@
     document.getElementById('project-modal').classList.remove('open');
   }
 
-  window.addEventListener('DOMContentLoaded', initProjectButtons);
+  window.addEventListener('DOMContentLoaded', () => {
+    initProjectButtons();
+    startIntro();
+  });
 </script>
 </body>
 </html>
