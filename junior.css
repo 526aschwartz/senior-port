@@ -1,5 +1,82 @@
 /* Junior Year Gallery Styles */
 
+.hero-featured {
+  position: absolute;
+  top: 50%;
+  right: 40px;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 16px;
+  z-index: 10;
+}
+
+.featured-card {
+  width: 200px;
+  background: rgba(26, 26, 26, 0.9);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.featured-card.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.featured-card:hover {
+  border-color: var(--red);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(229, 9, 20, 0.3);
+}
+
+.featured-img {
+  width: 100%;
+  height: 120px;
+  background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  margin-bottom: 12px;
+}
+
+.featured-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 14px;
+  color: white;
+  margin-bottom: 4px;
+}
+
+.featured-meta {
+  font-size: 10px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.featured-desc {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.3;
+  margin-bottom: 8px;
+}
+
+.featured-link {
+  color: var(--red);
+  text-decoration: none;
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.featured-link:hover {
+  color: #ff6b70;
+}
+
 .year-gallery {
   padding-top: 20px;
 }
