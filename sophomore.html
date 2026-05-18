@@ -33,30 +33,46 @@
       <div class="hero-sub">A collection of projects completed during my sophomore year (2023-2024).</div>
     </div>
 
-    <div class="hero-featured">
-      <div class="featured-card active" data-project="1">
-        <div class="featured-img">📱</div>
-        <div class="featured-title">Mobile App</div>
-        <div class="featured-meta">React Native</div>
-        <div class="featured-desc">Cross-platform mobile application with modern UI</div>
-        <a href="#" class="featured-link">View →</a>
-      </div>
+    <div class="hero-carousel" aria-label="Featured projects carousel">
+      <button class="carousel-control prev" aria-label="Previous">‹</button>
+      <div class="carousel-track">
+        <div class="carousel-slide" data-index="0" style="background: linear-gradient(135deg,#242424,#161616);">
+          <div class="carousel-slide-inner">
+            <div class="carousel-media">📱</div>
+            <div class="carousel-info">
+              <div class="carousel-title">Mobile App</div>
+              <div class="carousel-meta">React Native · 2024</div>
+              <div class="carousel-desc">Cross-platform mobile application with modern UI and offline support.</div>
+              <a class="carousel-cta" href="#">View Project</a>
+            </div>
+          </div>
+        </div>
 
-      <div class="featured-card" data-project="2">
-        <div class="featured-img">🎨</div>
-        <div class="featured-title">Design System</div>
-        <div class="featured-meta">UI/UX Design</div>
-        <div class="featured-desc">Comprehensive design system for web applications</div>
-        <a href="#" class="featured-link">View →</a>
-      </div>
+        <div class="carousel-slide" data-index="1" style="background: linear-gradient(135deg,#2a2626,#111);">
+          <div class="carousel-slide-inner">
+            <div class="carousel-media">🎨</div>
+            <div class="carousel-info">
+              <div class="carousel-title">Design System</div>
+              <div class="carousel-meta">UI/UX · 2024</div>
+              <div class="carousel-desc">Comprehensive design system and component library for consistent products.</div>
+              <a class="carousel-cta" href="#">View Project</a>
+            </div>
+          </div>
+        </div>
 
-      <div class="featured-card" data-project="3">
-        <div class="featured-img">💻</div>
-        <div class="featured-title">Web Platform</div>
-        <div class="featured-meta">Full Stack</div>
-        <div class="featured-desc">Scalable web platform with modern architecture</div>
-        <a href="#" class="featured-link">View →</a>
+        <div class="carousel-slide" data-index="2" style="background: linear-gradient(135deg,#202427,#0b0b0b);">
+          <div class="carousel-slide-inner">
+            <div class="carousel-media">💻</div>
+            <div class="carousel-info">
+              <div class="carousel-title">Web Platform</div>
+              <div class="carousel-meta">Full Stack · 2024</div>
+              <div class="carousel-desc">Scalable web platform with modern architecture and CI/CD.</div>
+              <a class="carousel-cta" href="#">View Project</a>
+            </div>
+          </div>
+        </div>
       </div>
+      <button class="carousel-control next" aria-label="Next">›</button>
     </div>
   </div>
 

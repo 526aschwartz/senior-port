@@ -24,7 +24,7 @@
     </div>
   </nav>
 
-  <div class="hero" id="hero-projects">
+    <div class="hero" id="hero-projects">
     <div class="hero-canvas-wrap" id="hcw-projects"></div>
     <div class="hero-overlay"></div>
     <div class="hero-content">
@@ -33,30 +33,46 @@
       <div class="hero-sub">A collection of projects completed during my junior year (2024-2025).</div>
     </div>
 
-    <div class="hero-featured">
-      <div class="featured-card active" data-project="1">
-        <div class="featured-img">🚀</div>
-        <div class="featured-title">API Platform</div>
-        <div class="featured-meta">Backend Development</div>
-        <div class="featured-desc">RESTful API with microservices architecture</div>
-        <a href="#" class="featured-link">View →</a>
-      </div>
+    <div class="hero-carousel" aria-label="Featured projects carousel">
+      <button class="carousel-control prev" aria-label="Previous">‹</button>
+      <div class="carousel-track">
+        <div class="carousel-slide" data-index="0" style="background: linear-gradient(135deg,#272424,#141414);">
+          <div class="carousel-slide-inner">
+            <div class="carousel-media">🚀</div>
+            <div class="carousel-info">
+              <div class="carousel-title">API Platform</div>
+              <div class="carousel-meta">Backend · 2025</div>
+              <div class="carousel-desc">RESTful API with microservices architecture and observability.</div>
+              <a class="carousel-cta" href="#">View Project</a>
+            </div>
+          </div>
+        </div>
 
-      <div class="featured-card" data-project="2">
-        <div class="featured-img">⚡</div>
-        <div class="featured-title">Performance Tool</div>
-        <div class="featured-meta">DevOps</div>
-        <div class="featured-desc">Web performance optimization toolkit</div>
-        <a href="#" class="featured-link">View →</a>
-      </div>
+        <div class="carousel-slide" data-index="1" style="background: linear-gradient(135deg,#2b2323,#0f0f0f);">
+          <div class="carousel-slide-inner">
+            <div class="carousel-media">⚡</div>
+            <div class="carousel-info">
+              <div class="carousel-title">Performance Tool</div>
+              <div class="carousel-meta">DevOps · 2025</div>
+              <div class="carousel-desc">Web performance optimization toolkit for faster pages.</div>
+              <a class="carousel-cta" href="#">View Project</a>
+            </div>
+          </div>
+        </div>
 
-      <div class="featured-card" data-project="3">
-        <div class="featured-img">🌐</div>
-        <div class="featured-title">E-commerce Site</div>
-        <div class="featured-meta">Full Stack</div>
-        <div class="featured-desc">Modern e-commerce platform with payments</div>
-        <a href="#" class="featured-link">View →</a>
+        <div class="carousel-slide" data-index="2" style="background: linear-gradient(135deg,#1f2626,#040404);">
+          <div class="carousel-slide-inner">
+            <div class="carousel-media">🌐</div>
+            <div class="carousel-info">
+              <div class="carousel-title">E-commerce Site</div>
+              <div class="carousel-meta">Full Stack · 2025</div>
+              <div class="carousel-desc">Modern e-commerce with payments, search, and personalization.</div>
+              <a class="carousel-cta" href="#">View Project</a>
+            </div>
+          </div>
+        </div>
       </div>
+      <button class="carousel-control next" aria-label="Next">›</button>
     </div>
   </div>
 
