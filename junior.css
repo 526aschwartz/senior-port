@@ -96,6 +96,15 @@
   color: var(--muted);
 }
 
+.gallery-img img {
+  width: 100%;
+  height: 100%;
+  max-height: 160px;
+  object-fit: cover;
+  display: block;
+  border-radius: 8px 8px 0 0;
+}
+
 .gallery-content {
   padding: 16px;
 }
