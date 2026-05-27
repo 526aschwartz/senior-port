@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Greece Travel Website — Sophomore Project</title>
+	<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet"/>
+	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="sophomore.css">
+	<style>
+		*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+		html, body {
+			width: 100%;
+			height: 100%;
+			overflow: hidden;
+		}
+
+		/* ── Entire page locked to viewport ── */
+		.page-wrap {
+			position: fixed;
+			inset: 0;
+			display: flex;
+			flex-direction: column;
+		}
+
+		/* ── Nav ── */
+		.nav {
+			position: relative;
+			z-index: 10;
+			flex-shrink: 0;
+			height: 64px;
+			/* keep whatever styles come from style.css / sophomore.css */
+		}
+
+		/* ── Hero: image fills everything below nav ── */
+		.hero {
+			position: relative;
+			flex: 1 1 0;
+			min-height: 0;
+			overflow: hidden;
+		}
+
+		/* Full-bleed background image */
+		.hero-bg {
+			position: absolute;
+			inset: 0;
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			object-position: center;
+			display: block;
+		}
+
+		/* Dark scrim so text stays readable */
+		.hero-scrim {
+			position: absolute;
+			inset: 0;
+			background: linear-gradient(
+				to right,
+				rgba(0,0,0,0.72) 0%,
+				rgba(0,0,0,0.45) 45%,
+				rgba(0,0,0,0.15) 100%
+			);
+		}
+
+		/* ── Text overlay: sits on top of image ── */
+		.hero-overlay-content {
+			position: absolute;
+			inset: 0;
+			display: flex;
+			align-items: center;
+			padding: 0 60px;
+			gap: 64px;
+		}
+
+		/* Left: big title */
+		.hero-title-block {
+			flex-shrink: 0;
+		}
+
+		.hero-eyebrow {
+			font-family: 'Barlow', sans-serif;
+			font-size: 11px;
+			font-weight: 500;
+			letter-spacing: 0.2em;
+			text-transform: uppercase;
+			color: rgba(255,255,255,0.45);
+			margin-bottom: 12px;
+		}
+
+		.hero-name {
+			font-family: 'Bebas Neue', sans-serif;
+			font-size: clamp(64px, 7vw, 110px);
+			line-height: 0.92;
+			color: #fff;
+			margin-bottom: 20px;
+		}
+
+		.hero-sub {
+			font-family: 'Barlow', sans-serif;
+			font-size: 14px;
+			font-weight: 300;
+			color: rgba(255,255,255,0.45);
+			line-height: 1.7;
+			max-width: 220px;
+		}
+
+		/* Thin vertical divider */
+		.hero-divider {
+			flex-shrink: 0;
+			width: 1px;
+			height: 60%;
+			
+		}
+
+		/* Right: details text */
+		.hero-details-block {
+			flex: 1;
+			max-width: 420px;
+		}
+
+		.hero-details-block h3 {
+			font-family: 'Bebas Neue', sans-serif;
+			font-size: 50px;
+			letter-spacing: 0.04em;
+			color: #fff;
+			margin-bottom: 12px;
+		}
+
+		.hero-details-block h4 {
+			font-family: 'Barlow', sans-serif;
+			font-size: 20px;
+			font-weight: 600;
+			letter-spacing: 0.18em;
+			text-transform: uppercase;
+			color: rgba(255, 255, 255);
+			margin: 20px 0 8px;
+		}
+
+		.hero-details-block p {
+			font-family: 'Barlow', sans-serif;
+			font-size: 14px;
+			font-weight: 300;
+			color: rgba(255, 255, 255);
+			line-height: 1.85;
+		}
+
+		.hero-details-block ul {
+			list-style: none;
+			margin: 0 0 24px;
+		}
+
+		.hero-details-block ul li {
+			font-family: 'Barlow', sans-serif;
+			font-size: 13px;
+			color: rgba(255, 255, 255);
+			padding: 4px 0 4px 16px;
+			position: relative;
+		}
+
+		.hero-details-block ul li::before {
+			content: '—';
+			position: absolute;
+			left: 0;
+			color: rgba(255, 255, 255);
+		}
+
+		.btn-primary {
+			display: inline-block;
+			font-family: 'Barlow', sans-serif;
+			font-size: 11px;
+			font-weight: 600;
+			letter-spacing: 0.14em;
+			text-transform: uppercase;
+			text-decoration: none;
+			color: #fff;
+			border: 1px solid rgba(255,255,255,0.4);
+			padding: 10px 22px;
+			border-radius: 3px;
+			transition: background 0.2s, border-color 0.2s;
+			margin-top: 6px;
+		}
+
+		.btn-primary:hover {
+			background: rgba(255,255,255,0.12);
+			border-color: rgba(255,255,255,0.7);
+		}
+
+		.back-link {
+			display: inline-block;
+			font-family: 'Barlow', sans-serif;
+			font-size: 12px;
+			font-weight: 300;
+			color: rgba(255,255,255,0.3);
+			text-decoration: none;
+			margin-top: 12px;
+			transition: color 0.2s;
+		}
+
+		.back-link:hover { color: rgba(255,255,255,0.65); }
+
+		/* ── Footer pinned bottom-left over image ── */
+		.page-footer {
+			position: absolute;
+			bottom: 24px;
+			left: 60px;
+			display: flex;
+			align-items: center;
+			gap: 12px;
+			z-index: 5;
+		}
+
+		.footer-logo {
+			font-family: 'Bebas Neue', sans-serif;
+			font-size: 18px;
+			color: rgba(255,255,255,0.25);
+		}
+
+		.footer-copy {
+			font-family: 'Barlow', sans-serif;
+			font-size: 11px;
+			color: rgba(255,255,255,0.2);
+		}
+	</style>
+</head>
+<body>
+
+<div class="page-wrap">
+
+	<nav class="nav">
+		<div class="nav-left">
+			<div class="nav-logo" onclick="window.location.href='index.html'">AS</div>
+			<div class="nav-links">
+				<span class="nav-link" onclick="window.location.href='sophomore.html'">Sophomore Projects</span>
+			</div>
+		</div>
+		<div class="nav-right">
+			<span class="back-btn" onclick="window.location.href='index.html'">← Main</span>
+			<div class="nav-avatar">AS</div>
+		</div>
+	</nav>
+
+	<div class="hero">
+		<!-- Full-bleed background -->
+		<img class="hero-bg" src="imgs/soph/soph.2.png" alt="Greece preview" />
+		<div class="hero-scrim"></div>
+
+		<!-- Text sitting directly on the image -->
+		<div class="hero-overlay-content">
+
+			<div class="hero-title-block">
+				<div class="hero-eyebrow">Class of 2024</div>
+				<div class="hero-name">Greece<br>Travel<br>Website</div>
+				<div class="hero-sub">A sophomore featured project built with HTML and CSS.</div>
+			</div>
+
+			<div class="hero-divider"></div>
+
+			<div class="hero-details-block">
+				<h3>About this project</h3>
+				<p>This site showcases travel highlights for Greece using semantic HTML, responsive layout techniques, and card-based design to present destinations and imagery.</p>
+
+				<h4>Technologies</h4>
+				<ul>
+					<li>HTML5</li>
+					<li>CSS3 (flexbox, responsive breakpoints)</li>
+					<li>Accessible semantic markup</li>
+				</ul>
+
+				<a class="btn-primary" href="https://46921fe6-386a-488d-84f1-e5127e936909-00-1isa9gwslcqyc.kirk.replit.dev/" target="_blank">Open Live Project →</a><br>
+				<a class="back-link" href="sophomore.html">← Back to Sophomore Projects</a>
+			</div>
+
+		</div>
+
+		<!-- Footer pinned over image -->
+		<div class="page-footer">
+			<div class="footer-logo">AS</div>
+			<div class="footer-copy">© 2025 Alyson Schwartz</div>
+		</div>
+	</div>
+
+</div>
+
+<script src="sophomore.js"></script>
+</body>
+</html>
